@@ -20,6 +20,17 @@ export const NewTodo = () => {
     router.refresh();
   };
 
+  const onDeleteTodosCompleted = async () => {
+    const response = await todosApi.removeTodosCompleted();
+    console.log({ response });
+    if (!response?.message) {
+      alert("Error al eliminar los todos completados");
+      return;
+    }
+    alert(response.message);
+    router.refresh();
+  }
+
   return (
     <form className="flex w-full" onSubmit={onSubmit}>
       <input
@@ -40,12 +51,12 @@ export const NewTodo = () => {
       <span className="flex flex-1"></span>
 
       <button
-        //TODO: onClick={ () => deleteCompleted() }
+        onClick={ () => onDeleteTodosCompleted() }
         type="button"
         className="flex items-center justify-center rounded ml-2 bg-red-400 p-2 text-white hover:bg-red-700 transition-all"
       >
         <IoTrashOutline />
-        Delete
+        <span className="ml-2" >Borrar completados</span>
       </button>
     </form>
   );

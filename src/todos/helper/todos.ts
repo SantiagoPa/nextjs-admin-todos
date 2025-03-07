@@ -30,3 +30,14 @@ export const createTodo = async ( description: string ): Promise<Todo> => {
     ).catch((err) => console.log(err));
     return todo;
 }
+
+export const removeTodosCompleted = async (): Promise<{ message: string } | null> => {
+    const response = await fetch(`/api/todos`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res) => res.json() 
+    ).catch((err) => console.log(err));
+    return response;
+}

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
         skip: skip,
     });
 
-    return NextResponse.json({todos, length: todos.length});
+    return NextResponse.json({ todos, length: todos.length });
 }
 
 
@@ -41,4 +41,18 @@ export async function POST(request: Request) {
     } catch (error: any) {
         return NextResponse.json({ message: error.errors }, { status: 400 });
     }
+}
+
+
+export async function DELETE(request: Request) {
+    try {
+        const resp = await prisma.todo.deleteMany({ where: { completed: true } });
+        if (resp.count === 0) {
+            return NextResponse.json({ message: 'No completed todos found' }, { status: 404 });
+        }
+        return NextResponse.json({ message: 'Deleted all completed todos' }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error }, { status: 400 });
+    }
+
 }
