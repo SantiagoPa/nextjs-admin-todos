@@ -3,33 +3,35 @@
 import { FormEvent, useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 
-import * as todosApi from "@/todos/helper/todos";
-import { useRouter } from "next/navigation";
+// import * as todosApi from "@/todos/helper/todos";
+// import { useRouter } from "next/navigation";
+import { addTodo, deleteCompleted } from "../actions/todo-actions";
 
 export const NewTodo = () => {
   const [description, setDescription] = useState("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (description.trim().length === 0) return;
-    const todo = await todosApi.createTodo(description);
+    const todo = await addTodo(description);
+    // const todo = await todosApi.createTodo(description);
     console.log({ newTodo: todo });
     setDescription("");
-    router.refresh();
+    // router.refresh();
   };
 
   const onDeleteTodosCompleted = async () => {
-    const response = await todosApi.removeTodosCompleted();
+    const response = await deleteCompleted();
     console.log({ response });
-    if (!response?.message) {
-      alert("Error al eliminar los todos completados");
-      return;
-    }
-    alert(response.message);
-    router.refresh();
-  }
+    // const response = await todosApi.removeTodosCompleted();
+    // if (!response?.message) {
+    //   alert("Error al eliminar los todos completados");
+    //   return;
+    // }
+    // router.refresh();
+  };
 
   return (
     <form className="flex w-full" onSubmit={onSubmit}>
@@ -51,12 +53,12 @@ export const NewTodo = () => {
       <span className="flex flex-1"></span>
 
       <button
-        onClick={ () => onDeleteTodosCompleted() }
+        onClick={() => onDeleteTodosCompleted()}
         type="button"
         className="flex items-center justify-center rounded ml-2 bg-red-400 p-2 text-white hover:bg-red-700 transition-all"
       >
         <IoTrashOutline />
-        <span className="ml-2" >Borrar completados</span>
+        <span className="ml-2">Borrar completados</span>
       </button>
     </form>
   );
